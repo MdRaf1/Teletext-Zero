@@ -1,0 +1,84 @@
+/**
+ * Teletext Zero - Global Styles
+ * Implements strict teletext constraints: 40x24 grid, 8-color palette, monospace font
+ */
+
+/* Import teletext color palette */
+@import './constants/colors.css';
+
+:root {
+  /* Teletext font stack - VT323 primary, Share Tech Mono fallback, then monospace */
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+  
+  /* Grid dimensions */
+  --grid-columns: 40;
+  --grid-rows: 24;
+  --grid-aspect-ratio: calc(40 / 24);
+  
+  /* Character cell sizing */
+  --char-width: 1ch;
+  --char-height: 1em;
+  
+  /* Disable font synthesis and smoothing for crisp teletext look */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Line height must be 1 for proper grid alignment */
+  line-height: 1;
+  font-weight: 400;
+}
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* Prevent scrolling at document level */
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  /* Prevent scrolling */
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  
+  /* Black background as per teletext spec */
+  background-color: var(--teletext-black, #000000) !important;
+  color: var(--teletext-white, #FFFFFF);
+  
+  /* Use teletext font */
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: var(--teletext-black, #000000) !important;
+}
+
+/* Disable all clickable links and mouse navigation */
+a {
+  pointer-events: none;
+  text-decoration: none;
+  color: inherit;
+  cursor: default;
+}
+
+/* Remove default button styles (not used in teletext) */
+button {
+  pointer-events: none;
+  cursor: default;
+}

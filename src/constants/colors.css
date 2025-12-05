@@ -1,0 +1,15 @@
+/**
+ * Teletext color palette as CSS custom properties
+ * These 8 colors are the only allowed colors in the teletext system
+ */
+
+:root {
+  --teletext-black: #000000;
+  --teletext-white: #FFFFFF;
+  --teletext-red: #FF0000;
+  --teletext-green: #00FF00;
+  --teletext-blue: #0000FF;
+  --teletext-yellow: #FFFF00;
+  --teletext-cyan: #00FFFF;
+  --teletext-magenta: #FF00FF;
+}

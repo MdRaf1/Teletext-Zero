@@ -1,0 +1,233 @@
+/**
+ * TeletextScreen component styles
+ * Implements responsive scaling while maintaining 40:24 aspect ratio
+ * Uses CSS transforms for GPU-accelerated scaling
+ * Font scales to fill the screen with the 40x24 grid
+ */
+
+.teletext-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--teletext-black, #000000);
+  
+  /* Prevent scrolling */
+  overflow: hidden;
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.teletext-screen-container {
+  /* Fill as much of the viewport as possible while maintaining aspect ratio */
+  width: 95vw;
+  height: calc(95vw * (24 / 40)); /* Maintain 40:24 aspect ratio */
+  max-width: calc(95vh * (40 / 24));
+  max-height: 95vh;
+  
+  /* Ensure aspect ratio is maintained */
+  aspect-ratio: 40 / 24;
+  
+  background-color: var(--teletext-black, #000000);
+  position: relative;
+  
+  /* Use CSS transform for scaling (GPU-accelerated) */
+  transform-origin: center center;
+  
+  /* Prevent scrolling within container */
+  overflow: hidden;
+  
+  /* Minimum scale to maintain readability */
+  min-width: 320px;
+  min-height: 192px; /* 320px * (24/40) */
+  
+  /* Font size scales with container width to fill 40 columns */
+  /* Each character should be ~2.5% of container width (100% / 40 = 2.5%) */
+  font-size: calc(95vw / 40 * 1.8);
+}
+
+/* Adjust font size based on which dimension is constraining */
+@media (min-aspect-ratio: 40/24) {
+  /* Height is the constraint */
+  .teletext-screen-container {
+    font-size: calc(95vh * (40 / 24) / 40 * 1.8);
+  }
+}
+
+/* Adjust for portrait orientation */
+@media (orientation: portrait) {
+  .teletext-screen-container {
+    width: 98vw;
+    height: calc(98vw * (24 / 40));
+    max-height: 95vh;
+    max-width: calc(95vh * (40 / 24));
+    font-size: calc(98vw / 40 * 1.8);
+  }
+}
+
+/* Adjust for very small screens */
+@media (max-width: 320px) {
+  .teletext-screen-container {
+    width: 100vw;
+    height: calc(100vw * (24 / 40));
+    min-width: 100vw;
+    font-size: calc(100vw / 40 * 1.6);
+  }
+}
+
+/* Large screens - cap the font size for readability */
+@media (min-width: 1920px) {
+  .teletext-screen-container {
+    font-size: clamp(24px, calc(95vw / 40 * 1.8), 48px);
+  }
+}
+
+.teletext-loading {
+  width: 100%;
+  height: 100%;
+  background-color: var(--teletext-black, #000000);
+  overflow: hidden;
+}
+
+/* Ensure static noise and teletext page fill the container */
+.teletext-screen-container .static-noise,
+.teletext-screen-container .teletext-page {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* ============================================
+   PAGE 666 - Ghost in the Machine Effects
+   ============================================ */
+
+/* Base state for page 666 - eerie red tint */
+.teletext-screen-container.page-666 {
+  animation: page666-ambient 4s ease-in-out infinite;
+}
+
+@keyframes page666-ambient {
+  0%, 100% {
+    filter: hue-rotate(0deg) saturate(1);
+  }
+  50% {
+    filter: hue-rotate(-10deg) saturate(1.2);
+  }
+}
+
+/* Background flash - dark red */
+.teletext-screen-container.background-flash {
+  background-color: #330000 !important;
+}
+
+.teletext-screen-container.background-flash .teletext-page {
+  background-color: #330000 !important;
+}
+
+/* Glitching state - visual distortion */
+.teletext-screen-container.glitching {
+  animation: glitch-shake 0.1s linear infinite;
+}
+
+@keyframes glitch-shake {
+  0% {
+    transform: translate(0, 0) skewX(0deg);
+  }
+  20% {
+    transform: translate(-2px, 1px) skewX(0.5deg);
+  }
+  40% {
+    transform: translate(2px, -1px) skewX(-0.5deg);
+  }
+  60% {
+    transform: translate(-1px, 2px) skewX(0.3deg);
+  }
+  80% {
+    transform: translate(1px, -2px) skewX(-0.3deg);
+  }
+  100% {
+    transform: translate(0, 0) skewX(0deg);
+  }
+}
+
+/* Chromatic aberration during glitch */
+.teletext-screen-container.glitching .teletext-page {
+  text-shadow:
+    -2px 0 rgba(255, 0, 0, 0.7),
+    2px 0 rgba(0, 255, 255, 0.7),
+    0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Scanline intensification on page 666 */
+.page-666 ~ .crt-scanlines {
+  opacity: 1.5;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.25) 0px,
+    rgba(0, 0, 0, 0.25) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+/* More intense noise on page 666 */
+.page-666 ~ .crt-noise {
+  opacity: 0.08;
+}
+
+/* Occasional horizontal tear effect */
+.teletext-screen-container.page-666::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    transparent 0%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.03) 55%,
+    transparent 55%,
+    transparent 100%
+  );
+  animation: tear-scroll 8s linear infinite;
+  z-index: 5;
+}
+
+@keyframes tear-scroll {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Red glow on text for page 666 */
+.teletext-screen-container.page-666 .teletext-page {
+  text-shadow:
+    0 0 2px rgba(255, 100, 100, 0.8),
+    0 0 4px rgba(255, 50, 50, 0.6),
+    0 0 8px rgba(255, 0, 0, 0.4),
+    0 0 12px rgba(200, 0, 0, 0.3);
+}
+
+/* Pulsing effect for the final creepy message */
+.teletext-screen-container.page-666 .content-line {
+  animation: text-pulse 2s ease-in-out infinite;
+}
+
+@keyframes text-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}

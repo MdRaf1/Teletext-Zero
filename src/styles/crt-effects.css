@@ -1,0 +1,361 @@
+/**
+ * CRT Effects - Haunted 1980s Television Aesthetic
+ * 
+ * Effects included:
+ * 1. Phosphor glow/bloom on text
+ * 2. Horizontal scanlines
+ * 3. 50Hz refresh flicker
+ * 4. Vignette & screen curvature
+ * 5. Animated signal noise/grain
+ */
+
+/* ============================================
+   1. THE GLOW - Phosphor bleeding effect
+   ============================================ */
+.crt-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.crt-overlay .teletext-screen-container {
+  /* Phosphor glow on all text */
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.8),
+    0 0 4px rgba(255, 255, 255, 0.6),
+    0 0 8px rgba(255, 255, 255, 0.4),
+    0 0 12px rgba(100, 200, 255, 0.3);
+}
+
+/* Color-specific glow for teletext colors */
+.crt-overlay [style*="color: var(--teletext-red)"],
+.crt-overlay [style*="color: #FF0000"] {
+  text-shadow:
+    0 0 2px rgba(255, 0, 0, 0.8),
+    0 0 6px rgba(255, 0, 0, 0.5),
+    0 0 12px rgba(255, 0, 0, 0.3);
+}
+
+.crt-overlay [style*="color: var(--teletext-green)"],
+.crt-overlay [style*="color: #00FF00"] {
+  text-shadow:
+    0 0 2px rgba(0, 255, 0, 0.8),
+    0 0 6px rgba(0, 255, 0, 0.5),
+    0 0 12px rgba(0, 255, 0, 0.3);
+}
+
+.crt-overlay [style*="color: var(--teletext-cyan)"],
+.crt-overlay [style*="color: #00FFFF"] {
+  text-shadow:
+    0 0 2px rgba(0, 255, 255, 0.8),
+    0 0 6px rgba(0, 255, 255, 0.5),
+    0 0 12px rgba(0, 255, 255, 0.3);
+}
+
+.crt-overlay [style*="color: var(--teletext-yellow)"],
+.crt-overlay [style*="color: #FFFF00"] {
+  text-shadow:
+    0 0 2px rgba(255, 255, 0, 0.8),
+    0 0 6px rgba(255, 255, 0, 0.5),
+    0 0 12px rgba(255, 255, 0, 0.3);
+}
+
+.crt-overlay [style*="color: var(--teletext-magenta)"],
+.crt-overlay [style*="color: #FF00FF"] {
+  text-shadow:
+    0 0 2px rgba(255, 0, 255, 0.8),
+    0 0 6px rgba(255, 0, 255, 0.5),
+    0 0 12px rgba(255, 0, 255, 0.3);
+}
+
+.crt-overlay [style*="color: var(--teletext-blue)"],
+.crt-overlay [style*="color: #0000FF"] {
+  text-shadow:
+    0 0 2px rgba(0, 100, 255, 0.8),
+    0 0 6px rgba(0, 100, 255, 0.5),
+    0 0 12px rgba(0, 100, 255, 0.3);
+}
+
+/* ============================================
+   2. SCANLINES - Horizontal CRT lines
+   ============================================ */
+.crt-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  /* Subtle scanline movement */
+  animation: scanline-scroll 8s linear infinite;
+}
+
+@keyframes scanline-scroll {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+/* ============================================
+   3. FLICKER - 50Hz refresh simulation
+   ============================================ */
+.crt-flicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 11;
+  animation: crt-flicker 0.04s infinite; /* ~25fps for subtle effect */
+}
+
+@keyframes crt-flicker {
+  0% {
+    opacity: 0.97;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.98;
+  }
+}
+
+/* ============================================
+   4. VIGNETTE & CURVATURE - CRT tube effect
+   ============================================ */
+.crt-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 12;
+  
+  /* Radial gradient for corner darkening */
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.2) 70%,
+    rgba(0, 0, 0, 0.5) 85%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  
+  /* Subtle border glow like CRT bezel */
+  box-shadow:
+    inset 0 0 80px 20px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Screen curvature effect using pseudo-element */
+.crt-curvature {
+  position: absolute;
+  top: -2%;
+  left: -2%;
+  width: 104%;
+  height: 104%;
+  pointer-events: none;
+  z-index: 13;
+  
+  /* Barrel distortion simulation */
+  border-radius: 50% / 10%;
+  background: transparent;
+  box-shadow:
+    inset 0 0 100px rgba(0, 0, 0, 0.4),
+    inset 0 0 50px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   5. SIGNAL NOISE - Animated grain texture
+   ============================================ */
+.crt-noise {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9;
+  opacity: 0.03;
+  
+  /* CSS-generated noise pattern */
+  background-image: 
+    repeating-radial-gradient(
+      circle at 17% 32%,
+      white 0px,
+      transparent 1px
+    ),
+    repeating-radial-gradient(
+      circle at 83% 67%,
+      white 0px,
+      transparent 1px
+    ),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      white 0px,
+      transparent 1px
+    );
+  background-size: 3px 3px, 5px 5px, 7px 7px;
+  
+  animation: noise-dance 0.2s steps(10) infinite;
+}
+
+@keyframes noise-dance {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-2%, -2%);
+  }
+  20% {
+    transform: translate(1%, 3%);
+  }
+  30% {
+    transform: translate(-3%, 1%);
+  }
+  40% {
+    transform: translate(2%, -1%);
+  }
+  50% {
+    transform: translate(-1%, 2%);
+  }
+  60% {
+    transform: translate(3%, -2%);
+  }
+  70% {
+    transform: translate(-2%, 3%);
+  }
+  80% {
+    transform: translate(1%, -3%);
+  }
+  90% {
+    transform: translate(-3%, -1%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* ============================================
+   ADDITIONAL EFFECTS
+   ============================================ */
+
+/* Occasional horizontal interference line */
+.crt-interference {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  pointer-events: none;
+  z-index: 14;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 80%,
+    transparent 100%
+  );
+  animation: interference-sweep 4s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes interference-sweep {
+  0% {
+    top: -5%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  95% {
+    opacity: 0.5;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+/* RGB color separation on edges (chromatic aberration) */
+.crt-overlay .teletext-screen-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+  
+  /* Subtle RGB fringing */
+  box-shadow:
+    inset 2px 0 4px rgba(255, 0, 0, 0.05),
+    inset -2px 0 4px rgba(0, 255, 255, 0.05);
+}
+
+/* Screen reflection highlight */
+.crt-reflection {
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  width: 30%;
+  height: 20%;
+  pointer-events: none;
+  z-index: 15;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 50%
+  );
+  border-radius: 50%;
+  filter: blur(10px);
+}
+
+/* Power-on glow effect for the whole screen */
+.crt-overlay {
+  animation: power-on 1.5s ease-out;
+}
+
+@keyframes power-on {
+  0% {
+    filter: brightness(0) saturate(0);
+  }
+  30% {
+    filter: brightness(1.5) saturate(0.5);
+  }
+  60% {
+    filter: brightness(1.2) saturate(0.8);
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+}
+
+/* Ensure the screen container has proper positioning for overlays */
+.crt-overlay .teletext-screen {
+  position: relative;
+}
+
+.crt-overlay .teletext-screen-container {
+  position: relative;
+}

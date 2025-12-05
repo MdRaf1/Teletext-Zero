@@ -1,0 +1,31 @@
+/**
+ * App Component Styles
+ * Styles for page buffer overlay with CRT effects
+ */
+
+/* Page buffer overlay - shows navigation progress */
+.page-buffer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: var(--teletext-blue, #0000FF);
+  color: var(--teletext-white, #FFFFFF);
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+  font-size: 2rem;
+  z-index: 1000;
+  border: 2px solid var(--teletext-white, #FFFFFF);
+  letter-spacing: 0.2em;
+  
+  /* CRT phosphor glow effect */
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.8),
+    0 0 4px rgba(255, 255, 255, 0.6),
+    0 0 8px rgba(100, 200, 255, 0.4);
+  
+  /* Glowing border */
+  box-shadow:
+    0 0 5px rgba(0, 100, 255, 0.5),
+    0 0 10px rgba(0, 100, 255, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.3);
+}

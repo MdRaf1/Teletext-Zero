@@ -1,0 +1,38 @@
+/**
+ * StaticNoise component styles
+ * Renders random character pattern to simulate TV static
+ */
+
+.static-noise {
+  width: 100%;
+  height: 100%;
+  background-color: var(--teletext-black, #000000);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+  line-height: 1;
+  font-size: 1.5rem;
+}
+
+.static-noise-line {
+  display: flex;
+  white-space: nowrap;
+  height: calc(100% / 24); /* Each line takes 1/24th of the height */
+}
+
+.static-noise-line span {
+  flex: 1;
+  display: inline-block;
+  text-align: center;
+}
+
+/* Teletext color classes for static noise */
+.teletext-black {
+  color: var(--teletext-black, #000000);
+}
+
+.teletext-white {
+  color: var(--teletext-white, #FFFFFF);
+}
